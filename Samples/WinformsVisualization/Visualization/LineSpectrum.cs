@@ -67,16 +67,24 @@ namespace WinformsVisualization.Visualization
             }
         }
 
-        public Bitmap CreateSpectrumLine(Size size, Brush brush, Color background, bool highQuality)
+        public Bitmap CreateSpectrumLine(Size size, Brush brush, Color background, bool highQuality, Form2 form2)
         {
             if (!UpdateFrequencyMappingIfNessesary(size))
                 return null;
 
             var fftBuffer = new float[(int) FftSize];
-
+            
+            
             //get the fft result from the spectrum provider
             if (SpectrumProvider.GetFftData(fftBuffer, this))
             {
+                string s = "";
+                foreach (var VARIABLE in fftBuffer)
+                {
+                    s += VARIABLE.ToString() + "  ";
+                }
+
+                //form2.ShowText(s);
                 using (var pen = new Pen(brush, (float) _barWidth))
                 {
                     var bitmap = new Bitmap(size.Width, size.Height);
@@ -95,7 +103,7 @@ namespace WinformsVisualization.Visualization
             return null;
         }
 
-        public Bitmap CreateSpectrumLine(Size size, Color color1, Color color2, Color background, bool highQuality)
+        public Bitmap CreateSpectrumLine(Size size, Color color1, Color color2, Color background, bool highQuality, Form2 form2)
         {
             if (!UpdateFrequencyMappingIfNessesary(size))
                 return null;
@@ -104,7 +112,7 @@ namespace WinformsVisualization.Visualization
                 Brush brush = new LinearGradientBrush(new RectangleF(0, 0, (float) _barWidth, size.Height), color2,
                     color1, LinearGradientMode.Vertical))
             {
-                return CreateSpectrumLine(size, brush, background, highQuality);
+                return CreateSpectrumLine(size, brush, background, highQuality, form2);
             }
         }
 

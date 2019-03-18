@@ -22,10 +22,11 @@ namespace WinformsVisualization
         private PitchShifter _pitchShifter;
         private LineSpectrum _lineSpectrum;
         private VoicePrint3DSpectrum _voicePrint3DSpectrum;
-
+        
         private readonly Bitmap _bitmap = new Bitmap(2000, 600);
         private int _xpos;
-
+        public Form2 form2 = new Form2();
+        public int counter =0;
         public Form1()
         {
             InitializeComponent();
@@ -44,10 +45,12 @@ namespace WinformsVisualization
                 
                 //open the selected file
                 ISampleSource source = CodecFactory.Instance.GetCodec(openFileDialog.FileName)
-                    .ToSampleSource()
-                    .AppendSource(x => new PitchShifter(x), out _pitchShifter);
+                    .ToSampleSource();
+                    //.AppendSource(x => new PitchShifter(x), out _pitchShifter);
 
                 SetupSampleSource(source);
+
+                //form2.ShowText(_source.ToString());
 
                 //play the audio
                 _soundOut = new WasapiOut();
@@ -58,6 +61,7 @@ namespace WinformsVisualization
 
                 propertyGridTop.SelectedObject = _lineSpectrum;
                 propertyGridBottom.SelectedObject = _voicePrint3DSpectrum;
+                form2.Show();
             }
         }
 
@@ -170,13 +174,15 @@ namespace WinformsVisualization
         {
             //render the spectrum
             GenerateLineSpectrum();
-            GenerateVoice3DPrintSpectrum();   
+            GenerateVoice3DPrintSpectrum();
+            counter++;
+            form2.ShowText(counter.ToString());
         }
 
         private void GenerateLineSpectrum()
         {
             Image image = pictureBoxTop.Image;
-            var newImage = _lineSpectrum.CreateSpectrumLine(pictureBoxTop.Size, Color.Green, Color.Red, Color.Black, true);
+            var newImage = _lineSpectrum.CreateSpectrumLine(pictureBoxTop.Size, Color.Green, Color.Red, Color.Black, true, form2);
             if (newImage != null)
             {
                 pictureBoxTop.Image = newImage;

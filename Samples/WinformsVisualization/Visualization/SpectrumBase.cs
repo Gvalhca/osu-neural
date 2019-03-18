@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Forms;
 using CSCore;
 using CSCore.DSP;
 
@@ -157,9 +158,18 @@ namespace WinformsVisualization.Visualization
 
         protected virtual SpectrumPointData[] CalculateSpectrumPoints(double maxValue, float[] fftBuffer)
         {
+            /*
+            string s="";
+            foreach (var VARIABLE in fftBuffer)
+            {
+                s += VARIABLE.ToString()+"  ";
+            }
+
+            MessageBox.Show(fftBuffer.Length.ToString());
+            */
             var dataPoints = new List<SpectrumPointData>();
 
-            double value0 = 0, value = 0;
+            double value0 = 0, value = 0; //die
             double lastValue = 0;
             double actualMaxValue = maxValue;
             int spectrumPointIndex = 0;
